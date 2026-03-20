@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { DS } from '../constants/designSystem';
 
 const BottomNavigationBar = () => {
   const router = useRouter();
@@ -8,13 +9,18 @@ const BottomNavigationBar = () => {
 
   type IconName =
     | 'home-outline'
+    | 'home'
     | 'document-text-outline'
+    | 'document-text'
     | 'briefcase-outline'
-    | 'person-outline';
+    | 'briefcase'
+    | 'person-outline'
+    | 'person';
 
   type Tab = {
     name: string;
-    icon: IconName;
+    iconOutline: IconName;
+    iconFilled: IconName;
     route:
       | '/lawyer/home'
       | '/lawyer/cases'
@@ -23,38 +29,37 @@ const BottomNavigationBar = () => {
   };
 
   const tabs: Tab[] = [
-    { name: 'Inicio', icon: 'home-outline', route: '/lawyer/home' },
-    { name: 'Casos', icon: 'document-text-outline', route: '/lawyer/cases' },
-    { name: 'Ofertas', icon: 'briefcase-outline', route: '/lawyer/offers' },
-    { name: 'Perfil', icon: 'person-outline', route: '/lawyer/profile' },
+    { name: 'Inicio', iconOutline: 'home-outline', iconFilled: 'home', route: '/lawyer/home' },
+    { name: 'Casos', iconOutline: 'document-text-outline', iconFilled: 'document-text', route: '/lawyer/cases' },
+    { name: 'Ofertas', iconOutline: 'briefcase-outline', iconFilled: 'briefcase', route: '/lawyer/offers' },
+    { name: 'Perfil', iconOutline: 'person-outline', iconFilled: 'person', route: '/lawyer/profile' },
   ];
 
   return (
-    <View className="absolute bottom-0 left-0 right-0 flex-row justify-around py-3 bg-white border-t border-gray-200">
+    <View style={styles.bar}>
       {tabs.map((tab) => {
         const isActive = pathname === tab.route;
 
         return (
           <TouchableOpacity
             key={tab.name}
-            className="items-center px-6 py-2"
+            style={styles.tab}
             onPress={() => {
               if (!isActive) {
                 router.push(tab.route);
               }
             }}
+            activeOpacity={0.75}
           >
+            <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
             <Ionicons
-              name={tab.icon}
-              size={24}
-              color={isActive ? '#2563eb' : '#6B7280'}
+              name={isActive ? tab.iconFilled : tab.iconOutline}
+              size={20}
+              color={isActive ? DS.colors.primary : '#8e96b0'}
             />
+            </View>
             <Text
-              className={`mt-1 text-xs ${
-                isActive
-                  ? 'font-semibold text-blue-600'
-                  : 'text-gray-600'
-              }`}
+              style={[styles.label, isActive && styles.labelActive]}
             >
               {tab.name}
             </Text>
@@ -66,3 +71,45 @@ const BottomNavigationBar = () => {
 };
 
 export default BottomNavigationBar;
+
+const styles = StyleSheet.create({
+  bar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    backgroundColor: DS.colors.surface,
+    borderTopWidth: 0.5,
+    borderTopColor: DS.colors.border,
+    paddingTop: 8,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 10,
+    paddingHorizontal: 8,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 4,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  iconWrap: {
+    width: 40,
+    height: 32,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconWrapActive: {
+    backgroundColor: DS.colors.primarySoft,
+  },
+  label: {
+    fontSize: 10,
+    fontWeight: '500',
+    color: '#8e96b0',
+  },
+  labelActive: {
+    fontWeight: '700',
+    color: DS.colors.primary,
+  },
+});

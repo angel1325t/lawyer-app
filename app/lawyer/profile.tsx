@@ -19,6 +19,7 @@ import {
   profileService,
   type LawyerProfile,
 } from '../../services/profileService';
+import { DS } from '../../constants/designSystem';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -136,7 +137,7 @@ export default function ProfileScreen() {
     >
       <View className="flex-row items-center flex-1">
         <View className="p-3 bg-gray-100 rounded-xl">
-          <Ionicons name={icon} size={24} color="#2563eb" />
+          <Ionicons name={icon} size={24} color={DS.colors.primary} />
         </View>
         <Text className={`ml-4 font-semibold text-base ${color}`}>
           {title}
@@ -148,7 +149,7 @@ export default function ProfileScreen() {
         )}
       </View>
       {loading ? (
-        <ActivityIndicator size="small" color="#2563eb" />
+        <ActivityIndicator size="small" color={DS.colors.primary} />
       ) : (
         showArrow && <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
       )}
@@ -156,7 +157,7 @@ export default function ProfileScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View className="px-6 pt-4 pb-6">
@@ -182,7 +183,7 @@ export default function ProfileScreen() {
                   resizeMode="cover"
                 />
               ) : (
-                <Ionicons name="person" size={28} color="#2563eb" />
+                <Ionicons name="person" size={28} color={DS.colors.primary} />
               )}
             </View>
 
@@ -197,7 +198,7 @@ export default function ProfileScreen() {
                   </View>
                 )}
                 {loadingProfile ? (
-                  <ActivityIndicator size="small" color="#2563eb" style={{ marginLeft: 8 }} />
+                  <ActivityIndicator size="small" color={DS.colors.primary} style={{ marginLeft: 8 }} />
                 ) : null}
               </View>
 
@@ -208,7 +209,7 @@ export default function ProfileScreen() {
                 {profileData?.email || user?.email || user?.login}
               </Text>
 
-              <Text className="mt-1 text-xs font-medium text-blue-600">
+              <Text className="mt-1 text-xs font-medium" style={{ color: DS.colors.primary }}>
                 Abogado
               </Text>
             </View>

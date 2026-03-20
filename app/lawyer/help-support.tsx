@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { DS } from '../../constants/designSystem';
 
 const supportContacts = [
   {
@@ -33,7 +34,7 @@ export default function HelpSupportScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-6 pt-4 pb-6 bg-white border-b border-slate-200">
           <View className="flex-row items-center">
@@ -67,7 +68,7 @@ export default function HelpSupportScreen() {
             <View key={contact.title} className="p-5 mb-3 bg-white border border-slate-100 shadow-sm rounded-2xl">
               <View className="flex-row items-start">
                 <View className="p-3 rounded-xl bg-slate-100">
-                  <Ionicons name={contact.icon} size={20} color="#2563eb" />
+                  <Ionicons name={contact.icon} size={20} color={DS.colors.primary} />
                 </View>
                 <View className="flex-1 ml-3">
                   <Text className="text-base font-bold text-slate-800">{contact.title}</Text>
@@ -87,7 +88,8 @@ export default function HelpSupportScreen() {
 
             <TouchableOpacity
               onPress={handleComingSoon}
-              className="items-center py-3 mt-4 bg-slate-900 rounded-xl"
+              className="items-center py-3 mt-4 rounded-xl"
+              style={{ backgroundColor: DS.colors.primary }}
               activeOpacity={0.85}
             >
               <Text className="font-semibold text-white">Solicitar asistencia</Text>

@@ -18,6 +18,7 @@ import { Input } from '../../components/Input';
 import { VerificationCodeInput } from '../../components/VerificationCodeInput';
 import { useAuth } from '../../context/AuthContext';
 import { profileService } from '../../services/profileService';
+import { DS } from '../../constants/designSystem';
 
 const emailRegex = /\S+@\S+\.\S+/;
 
@@ -208,8 +209,8 @@ export default function EditProfileScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
-        <ActivityIndicator size="large" color="#2563eb" />
+      <SafeAreaView className="items-center justify-center flex-1" style={{ backgroundColor: DS.colors.background }}>
+        <ActivityIndicator size="large" color={DS.colors.primary} />
         <Text className="mt-3 text-gray-600">Cargando perfil...</Text>
       </SafeAreaView>
     );
@@ -218,7 +219,7 @@ export default function EditProfileScreen() {
   const emailChanged = normalizeEmail(email) !== initialEmail;
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 24 }}
@@ -240,13 +241,14 @@ export default function EditProfileScreen() {
                 resizeMode="cover"
               />
             ) : (
-              <Ionicons name="person" size={50} color="#2563eb" />
+              <Ionicons name="person" size={50} color={DS.colors.primary} />
             )}
           </View>
 
           <View className="flex-row mt-4">
             <TouchableOpacity
-              className="px-4 py-2 mr-2 bg-blue-600 rounded-lg"
+              className="px-4 py-2 mr-2 rounded-lg"
+              style={{ backgroundColor: DS.colors.primary }}
               onPress={handlePickImage}
             >
               <Text className="font-semibold text-white">Cambiar imagen</Text>
@@ -321,7 +323,7 @@ export default function EditProfileScreen() {
               onPress={handleResendCode}
               disabled={requestingCode}
             >
-              <Text className="font-medium text-blue-600">
+              <Text className="font-medium" style={{ color: DS.colors.primary }}>
                 Reenviar codigo
               </Text>
             </TouchableOpacity>

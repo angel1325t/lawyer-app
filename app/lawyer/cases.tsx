@@ -17,6 +17,7 @@ import lawyerCaseService, { LawyerCase } from '../../services/caseService';
 import offerService from '../../services/offerService';
 import OfferDialog from '../../components/offerDialog';
 import BottomNavigationBar from '@/components/BottomNavigationBar';
+import { DS, createStatusTone } from '../../constants/designSystem';
 
 export default function CasesScreen() {
   const router = useRouter();
@@ -120,28 +121,28 @@ export default function CasesScreen() {
   const getStageColor = (stage: string) => {
     const stageLower = stage.toLowerCase();
     if (stageLower.includes('new') || stageLower.includes('nuevo')) {
-      return { bg: 'bg-blue-100', text: 'text-blue-700', icon: 'sparkles' };
+      return { ...createStatusTone('info'), icon: 'sparkles' };
     }
     if (stageLower.includes('progress') || stageLower.includes('progreso')) {
-      return { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: 'time' };
+      return { ...createStatusTone('warning'), icon: 'time' };
     }
     if (stageLower.includes('won') || stageLower.includes('ganado')) {
-      return { bg: 'bg-green-100', text: 'text-green-700', icon: 'checkmark-circle' };
+      return { ...createStatusTone('success'), icon: 'checkmark-circle' };
     }
-    return { bg: 'bg-gray-100', text: 'text-gray-700', icon: 'document' };
+    return { ...createStatusTone('neutral'), icon: 'document' };
   };
 
   if (loading) {
     return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
-        <ActivityIndicator size="large" color="#2563eb" />
+      <SafeAreaView className="items-center justify-center flex-1" style={{ backgroundColor: DS.colors.background }}>
+        <ActivityIndicator size="large" color={DS.colors.primary} />
         <Text className="mt-4 text-gray-600">Cargando casos...</Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       {/* Header */}
       <View className="px-6 pt-4 pb-6 bg-white border-b border-gray-200">
         <View className="flex-row items-center justify-between mb-2">
@@ -155,7 +156,7 @@ export default function CasesScreen() {
             onPress={onRefresh}
             className="p-2 -mr-2"
           >
-            <Ionicons name="refresh" size={24} color="#2563eb" />
+            <Ionicons name="refresh" size={24} color={DS.colors.primary} />
           </TouchableOpacity>
         </View>
         <Text className="text-2xl font-bold text-gray-800">
@@ -215,8 +216,8 @@ export default function CasesScreen() {
                         </Text>
                       </View>
                     </View>
-                    <View className={`px-3 py-1.5 rounded-lg ${stageStyle.bg}`}>
-                      <Text className={`text-xs font-semibold ${stageStyle.text}`}>
+                    <View className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: stageStyle.bg }}>
+                      <Text className="text-xs font-semibold" style={{ color: stageStyle.text }}>
                         {caseItem.stage}
                       </Text>
                     </View>
@@ -241,8 +242,8 @@ export default function CasesScreen() {
   className="flex-row items-center"
 >
 
-                      <Ionicons name="eye-outline" size={18} color="#2563eb" />
-                      <Text className="ml-2 text-sm font-medium text-blue-600">
+                      <Ionicons name="eye-outline" size={18} color={DS.colors.primary} />
+                      <Text className="ml-2 text-sm font-medium" style={{ color: DS.colors.primary }}>
                         Ver detalles
                       </Text>
                     </TouchableOpacity>
@@ -257,7 +258,8 @@ export default function CasesScreen() {
                     ) : (
                       <TouchableOpacity
                         onPress={(e) => handleOpenOfferDialog(caseItem, e)}
-                        className="flex-row items-center px-4 py-2 bg-blue-600 rounded-lg"
+                        className="flex-row items-center px-4 py-2 rounded-lg"
+                        style={{ backgroundColor: DS.colors.primary }}
                         activeOpacity={0.8}
                       >
                         <Ionicons name="cash" size={16} color="white" />

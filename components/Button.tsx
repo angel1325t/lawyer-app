@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { DS } from '../constants/designSystem';
 
 interface ButtonProps {
   title: string;
@@ -21,17 +22,33 @@ export const Button = ({
       onPress={onPress}
       disabled={isDisabled}
       activeOpacity={0.7}
-      className={`py-4 rounded-lg items-center ${
-        isDisabled ? 'bg-gray-400' : 'bg-gray-800'
-      }`}
+      style={[styles.button, isDisabled && styles.buttonDisabled]}
     >
       {loading ? (
         <ActivityIndicator color="#fff" />
       ) : (
-        <Text className="text-base font-semibold text-white">
+        <Text style={styles.label}>
           {title}
         </Text>
       )}
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    minHeight: 48,
+    borderRadius: DS.radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: DS.colors.primary,
+  },
+  buttonDisabled: {
+    opacity: 0.55,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: DS.colors.surface,
+  },
+});

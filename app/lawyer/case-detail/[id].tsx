@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import lawyerCaseService, { LawyerCase } from '../../../services/caseService';
 import offerService from '../../../services/offerService';
 import OfferDialog from '../../../components/offerDialog';
+import { DS, createStatusTone } from '../../../constants/designSystem';
 
 type StageStyle = {
   bg: string;
@@ -100,21 +101,21 @@ export default function CaseDetailScreen() {
   const stageStyle = useMemo<StageStyle>(() => {
     const stageLower = caseData?.stage?.toLowerCase() || '';
     if (stageLower.includes('new') || stageLower.includes('nuevo')) {
-      return { bg: 'bg-blue-100', text: 'text-blue-700', icon: 'sparkles-outline' };
+      return { ...createStatusTone('info'), icon: 'sparkles-outline' };
     }
     if (stageLower.includes('progress') || stageLower.includes('progreso')) {
-      return { bg: 'bg-amber-100', text: 'text-amber-700', icon: 'time-outline' };
+      return { ...createStatusTone('warning'), icon: 'time-outline' };
     }
     if (stageLower.includes('won') || stageLower.includes('ganado')) {
-      return { bg: 'bg-emerald-100', text: 'text-emerald-700', icon: 'checkmark-circle-outline' };
+      return { ...createStatusTone('success'), icon: 'checkmark-circle-outline' };
     }
-    return { bg: 'bg-slate-100', text: 'text-slate-700', icon: 'document-text-outline' };
+    return { ...createStatusTone('neutral'), icon: 'document-text-outline' };
   }, [caseData?.stage]);
 
   if (loading) {
     return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-slate-50">
-        <ActivityIndicator size="large" color="#2563eb" />
+      <SafeAreaView className="items-center justify-center flex-1" style={{ backgroundColor: DS.colors.background }}>
+        <ActivityIndicator size="large" color={DS.colors.primary} />
         <Text className="mt-4 text-slate-600">Cargando detalle del caso...</Text>
       </SafeAreaView>
     );
@@ -122,12 +123,13 @@ export default function CaseDetailScreen() {
 
   if (!caseData) {
     return (
-      <SafeAreaView className="items-center justify-center flex-1 px-6 bg-slate-50">
+      <SafeAreaView className="items-center justify-center flex-1 px-6" style={{ backgroundColor: DS.colors.background }}>
         <Ionicons name="alert-circle-outline" size={64} color="#ef4444" />
         <Text className="mt-4 text-xl font-semibold text-slate-800">Caso no encontrado</Text>
         <TouchableOpacity
           onPress={() => router.back()}
-          className="px-6 py-3 mt-6 bg-blue-600 rounded-xl"
+          className="px-6 py-3 mt-6 rounded-xl"
+          style={{ backgroundColor: DS.colors.primary }}
         >
           <Text className="font-semibold text-white">Volver</Text>
         </TouchableOpacity>
@@ -136,14 +138,14 @@ export default function CaseDetailScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <View className="px-6 pt-4 pb-5 bg-white border-b border-slate-200">
         <View className="flex-row items-center justify-between">
           <TouchableOpacity onPress={() => router.back()} className="p-2 -ml-2">
             <Ionicons name="arrow-back" size={24} color="#0f172a" />
           </TouchableOpacity>
           <TouchableOpacity onPress={loadCaseDetails} className="p-2 -mr-2">
-            <Ionicons name="refresh-outline" size={22} color="#2563eb" />
+            <Ionicons name="refresh-outline" size={22} color={DS.colors.primary} />
           </TouchableOpacity>
         </View>
         <Text className="mt-4 text-xs font-semibold tracking-widest text-slate-500 uppercase">
@@ -163,10 +165,10 @@ export default function CaseDetailScreen() {
                 <Text className="text-2xl font-extrabold leading-8 text-slate-900">{caseData.name}</Text>
                 <Text className="mt-2 text-sm text-slate-500">Caso #{caseData.id}</Text>
               </View>
-              <View className={`px-3 py-2 rounded-xl ${stageStyle.bg}`}>
+              <View className="px-3 py-2 rounded-xl" style={{ backgroundColor: stageStyle.bg }}>
                 <View className="flex-row items-center">
                   <Ionicons name={stageStyle.icon} size={16} color="#334155" />
-                  <Text className={`ml-1 text-xs font-semibold ${stageStyle.text}`}>
+                  <Text className="ml-1 text-xs font-semibold" style={{ color: stageStyle.text }}>
                     {caseData.stage}
                   </Text>
                 </View>

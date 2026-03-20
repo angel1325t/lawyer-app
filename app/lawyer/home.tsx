@@ -23,6 +23,7 @@ import dashboardService, {
   DashboardSummary,
 } from '../../services/dashboardService';
 import notificationService from '../../services/notificationService';
+import { DS, createStatusTone } from '../../constants/designSystem';
 
 const EMPTY_SUMMARY: DashboardSummary = {
   active_cases: 0,
@@ -54,21 +55,21 @@ export default function HomeScreen() {
         label: 'Casos Activos',
         value: String(summary.active_cases || 0),
         icon: 'folder-open',
-        color: 'bg-blue-500',
+        color: DS.colors.primary,
       },
       {
         id: 'completed',
         label: 'Completados',
         value: String(summary.completed_cases || 0),
         icon: 'checkmark-circle',
-        color: 'bg-green-500',
+        color: DS.colors.success,
       },
       {
         id: 'rating',
         label: `Rating (${summary.total_ratings || 0})`,
         value: (summary.average_rating || 0).toFixed(1),
         icon: 'star',
-        color: 'bg-yellow-500',
+        color: '#9a6a00',
       },
     ],
     [summary]
@@ -124,7 +125,7 @@ export default function HomeScreen() {
   }, [loadHomeData]);
 
   const renderStat = ({ item }: any) => (
-    <View className={`${item.color} rounded-2xl p-4 mr-3 w-40 shadow-lg`}>
+    <View className="p-4 mr-3 shadow-lg rounded-2xl w-40" style={{ backgroundColor: item.color }}>
       <Ionicons name={item.icon as any} size={28} color="white" />
       <Text className="mt-2 text-2xl font-bold text-white">{item.value}</Text>
       <Text className="mt-1 text-sm text-white">{item.label}</Text>
@@ -136,15 +137,15 @@ export default function HomeScreen() {
     const normalizedCode = (statusCode || '').toLowerCase();
 
     if (normalizedCode === 'case_in_progress' || normalizedStatus.includes('progreso')) {
-      return { bg: 'bg-blue-100', text: 'text-blue-700' };
+      return createStatusTone('info');
     }
     if (normalizedCode === 'case_won' || normalizedStatus.includes('cerrado')) {
-      return { bg: 'bg-green-100', text: 'text-green-700' };
+      return createStatusTone('success');
     }
     if (normalizedCode === 'case_cancelled' || normalizedStatus.includes('cancel')) {
-      return { bg: 'bg-red-100', text: 'text-red-700' };
+      return createStatusTone('danger');
     }
-    return { bg: 'bg-gray-100', text: 'text-gray-700' };
+    return createStatusTone('neutral');
   };
 
   const formatDate = (dateValue?: string | null) => {
@@ -174,8 +175,8 @@ export default function HomeScreen() {
             <Text className="mb-1 text-lg font-bold text-gray-800">{item.name}</Text>
             <Text className="text-sm text-gray-500">{item.client_name}</Text>
           </View>
-          <View className={`px-3 py-1 rounded-lg ${statusColors.bg}`}>
-            <Text className={`text-xs font-semibold ${statusColors.text}`}>{item.stage}</Text>
+          <View className="px-3 py-1 rounded-lg" style={{ backgroundColor: statusColors.bg }}>
+            <Text className="text-xs font-semibold" style={{ color: statusColors.text }}>{item.stage}</Text>
           </View>
         </View>
 
@@ -194,7 +195,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
@@ -205,8 +206,8 @@ export default function HomeScreen() {
         <View className="px-6 pt-4 pb-6 bg-white">
           <View className="flex-row items-center justify-between mb-4">
             <View>
-              <Text className="text-sm text-gray-500">Bienvenido,</Text>
-              <Text className="text-2xl font-bold text-gray-800">
+              <Text className="text-sm" style={{ color: DS.colors.textMuted }}>Bienvenido,</Text>
+              <Text className="text-2xl font-bold" style={{ color: DS.colors.textStrong }}>
                 {user?.name || 'Abogado'}
               </Text>
             </View>
@@ -216,7 +217,7 @@ export default function HomeScreen() {
                   onPress={() => router.push('/notifications/notifications')}
                   className="p-3 bg-gray-100 rounded-full"
                 >
-                  <Ionicons name="notifications-outline" size={22} color="#1F2937" />
+                  <Ionicons name="notifications-outline" size={22} color={DS.colors.textStrong} />
                 </TouchableOpacity>
                 {unreadNotifications > 0 && (
                   <View
@@ -241,7 +242,7 @@ export default function HomeScreen() {
                     resizeMode="cover"
                   />
                 ) : (
-                  <Ionicons name="person-outline" size={24} color="#1F2937" />
+                  <Ionicons name="person-outline" size={24} color={DS.colors.textStrong} />
                 )}
               </TouchableOpacity>
             </View>
@@ -249,9 +250,9 @@ export default function HomeScreen() {
 
           {/* Verification Badge */}
           {user?.lawyer_state === 'approved' && (
-            <View className="flex-row items-center p-3 bg-green-50 rounded-xl">
-              <Ionicons name="checkmark-circle" size={20} color="#22C55E" />
-              <Text className="ml-2 font-semibold text-green-700">
+            <View className="flex-row items-center p-3 rounded-xl" style={{ backgroundColor: DS.colors.successSoft }}>
+              <Ionicons name="checkmark-circle" size={20} color={DS.colors.success} />
+              <Text className="ml-2 font-semibold" style={{ color: DS.colors.success }}>
                 Perfil Verificado
               </Text>
             </View>
@@ -260,7 +261,7 @@ export default function HomeScreen() {
 
         {/* Stats */}
         <View className="mt-6">
-          <Text className="px-6 mb-4 text-xl font-bold text-gray-800">Resumen</Text>
+          <Text className="px-6 mb-4 text-xl font-bold" style={{ color: DS.colors.textStrong }}>Resumen</Text>
           <FlatList
             data={stats}
             renderItem={renderStat}
@@ -274,15 +275,15 @@ export default function HomeScreen() {
         {/* Recent Cases */}
         <View className="mt-8 mb-6">
           <View className="flex-row items-center justify-between px-6 mb-4">
-            <Text className="text-xl font-bold text-gray-800">Casos Recientes</Text>
+            <Text className="text-xl font-bold" style={{ color: DS.colors.textStrong }}>Casos Recientes</Text>
             <TouchableOpacity onPress={() => router.push('/lawyer/cases')}>
-              <Text className="font-semibold text-blue-600">Ver todos</Text>
+              <Text className="font-semibold" style={{ color: DS.colors.primary }}>Ver todos</Text>
             </TouchableOpacity>
           </View>
 
           {loading ? (
             <View className="items-center justify-center py-10">
-              <ActivityIndicator size="large" color="#2563eb" />
+              <ActivityIndicator size="large" color={DS.colors.primary} />
               <Text className="mt-3 text-gray-500">Cargando casos...</Text>
             </View>
           ) : recentCases.length > 0 ? (

@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from './Button';
+import { DS } from '../constants/designSystem';
 
 interface OfferDialogProps {
   visible: boolean;
@@ -82,8 +83,8 @@ export default function OfferDialog({
             >
               {/* Header */}
               <View className="items-center p-6 border-b border-gray-100">
-                <View className="p-4 mb-3 bg-blue-100 rounded-full">
-                  <Ionicons name="cash-outline" size={32} color="#2563eb" />
+                <View className="p-4 mb-3 rounded-full" style={{ backgroundColor: DS.colors.primarySoft }}>
+                  <Ionicons name="cash-outline" size={32} color={DS.colors.primary} />
                 </View>
                 <Text className="mb-1 text-xl font-bold text-gray-800">
                   Crear Oferta
@@ -103,9 +104,11 @@ export default function OfferDialog({
                     Precio (DOP) *
                   </Text>
                   <View
-                    className={`flex-row items-center px-4 py-3 bg-gray-50 border rounded-xl ${
-                      errors.price ? 'border-red-500' : 'border-gray-200'
-                    }`}
+                    className="flex-row items-center px-4 py-3 border rounded-xl"
+                    style={{
+                      backgroundColor: '#f8f9fc',
+                      borderColor: errors.price ? DS.colors.danger : DS.colors.border,
+                    }}
                   >
                     <Text className="mr-2 text-lg text-gray-600">$</Text>
                     <TextInput
@@ -118,7 +121,7 @@ export default function OfferDialog({
                     />
                   </View>
                   {errors.price && (
-                    <Text className="mt-1 ml-1 text-sm text-red-500">
+                    <Text className="mt-1 ml-1 text-sm" style={{ color: DS.colors.danger }}>
                       {errors.price}
                     </Text>
                   )}
@@ -130,9 +133,11 @@ export default function OfferDialog({
                     Mensaje *
                   </Text>
                   <TextInput
-                    className={`px-4 py-3 bg-gray-50 border rounded-xl text-base text-gray-800 ${
-                      errors.message ? 'border-red-500' : 'border-gray-200'
-                    }`}
+                    className="px-4 py-3 text-base text-gray-800 border rounded-xl"
+                    style={{
+                      backgroundColor: '#f8f9fc',
+                      borderColor: errors.message ? DS.colors.danger : DS.colors.border,
+                    }}
                     placeholder="Describe tu propuesta..."
                     placeholderTextColor="#9CA3AF"
                     value={message}
@@ -142,7 +147,7 @@ export default function OfferDialog({
                     textAlignVertical="top"
                   />
                   {errors.message && (
-                    <Text className="mt-1 ml-1 text-sm text-red-500">
+                    <Text className="mt-1 ml-1 text-sm" style={{ color: DS.colors.danger }}>
                       {errors.message}
                     </Text>
                   )}
@@ -160,7 +165,7 @@ export default function OfferDialog({
                     className="items-center py-3"
                     disabled={loading}
                   >
-                    <Text className="font-semibold text-gray-600">Cancelar</Text>
+                    <Text className="font-semibold" style={{ color: DS.colors.textMuted }}>Cancelar</Text>
                   </TouchableOpacity>
                 </View>
               </View>

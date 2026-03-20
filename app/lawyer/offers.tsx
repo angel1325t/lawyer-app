@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import offerService, { LawyerOffer } from '../../services/offerService';
 import BottomNavigationBar from '@/components/BottomNavigationBar';
+import { DS, createStatusTone } from '../../constants/designSystem';
 
 export default function OffersScreen() {
   const router = useRouter();
@@ -80,15 +81,15 @@ export default function OffersScreen() {
   const getStateStyle = (state: string) => {
     switch (state) {
       case 'sent':
-        return { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Enviada', icon: 'paper-plane' };
+        return { ...createStatusTone('info'), label: 'Enviada', icon: 'paper-plane' };
       case 'accepted':
-        return { bg: 'bg-green-100', text: 'text-green-700', label: 'Aceptada', icon: 'checkmark-circle' };
+        return { ...createStatusTone('success'), label: 'Aceptada', icon: 'checkmark-circle' };
       case 'rejected':
-        return { bg: 'bg-red-100', text: 'text-red-700', label: 'Rechazada', icon: 'close-circle' };
+        return { ...createStatusTone('danger'), label: 'Rechazada', icon: 'close-circle' };
       case 'cancelled':
-        return { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Cancelada', icon: 'ban' };
+        return { ...createStatusTone('neutral'), label: 'Cancelada', icon: 'ban' };
       default:
-        return { bg: 'bg-gray-100', text: 'text-gray-700', label: state, icon: 'document' };
+        return { ...createStatusTone('neutral'), label: state, icon: 'document' };
     }
   };
 
@@ -114,15 +115,15 @@ export default function OffersScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView className="items-center justify-center flex-1 bg-gray-50">
-        <ActivityIndicator size="large" color="#2563eb" />
+      <SafeAreaView className="items-center justify-center flex-1" style={{ backgroundColor: DS.colors.background }}>
+        <ActivityIndicator size="large" color={DS.colors.primary} />
         <Text className="mt-4 text-gray-600">Cargando ofertas...</Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       {/* Header */}
       <View className="px-6 pt-4 pb-6 bg-white border-b border-gray-200">
         <View className="flex-row items-center justify-between mb-2">
@@ -136,7 +137,7 @@ export default function OffersScreen() {
             onPress={onRefresh}
             className="p-2 -mr-2"
           >
-            <Ionicons name="refresh" size={24} color="#2563eb" />
+            <Ionicons name="refresh" size={24} color={DS.colors.primary} />
           </TouchableOpacity>
         </View>
         <Text className="text-2xl font-bold text-gray-800">
@@ -166,7 +167,8 @@ export default function OffersScreen() {
             </Text>
             <TouchableOpacity
               onPress={() => router.push('/lawyer/cases')}
-              className="px-6 py-3 bg-blue-600 rounded-xl"
+              className="px-6 py-3 rounded-xl"
+              style={{ backgroundColor: DS.colors.primary }}
             >
               <Text className="font-semibold text-white">Ver Casos</Text>
             </TouchableOpacity>
@@ -187,12 +189,12 @@ export default function OffersScreen() {
                       <Text className="mb-1 text-lg font-bold text-gray-800">
                         {offer.case_name}
                       </Text>
-                      <Text className="text-2xl font-bold text-blue-600">
+                      <Text className="text-2xl font-bold" style={{ color: DS.colors.primary }}>
                         {formatPrice(offer.price)}
                       </Text>
                     </View>
-                    <View className={`px-3 py-1.5 rounded-lg ${stateStyle.bg}`}>
-                      <Text className={`text-xs font-semibold ${stateStyle.text}`}>
+                    <View className="px-3 py-1.5 rounded-lg" style={{ backgroundColor: stateStyle.bg }}>
+                      <Text className="text-xs font-semibold" style={{ color: stateStyle.text }}>
                         {stateStyle.label}
                       </Text>
                     </View>
@@ -236,8 +238,8 @@ export default function OffersScreen() {
   className="flex-row items-center"
 >
 
-                      <Ionicons name="eye-outline" size={18} color="#2563eb" />
-                      <Text className="ml-2 font-medium text-blue-600">Ver Caso</Text>
+                      <Ionicons name="eye-outline" size={18} color={DS.colors.primary} />
+                      <Text className="ml-2 font-medium" style={{ color: DS.colors.primary }}>Ver Caso</Text>
                     </TouchableOpacity>
 
                     {offer.state === 'sent' && (

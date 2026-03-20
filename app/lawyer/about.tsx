@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { DS } from '../../constants/designSystem';
 
 const aboutBlocks = [
   {
@@ -26,7 +27,7 @@ export default function AboutScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-6 pt-4 pb-6 bg-white border-b border-slate-200">
           <View className="flex-row items-center">
@@ -57,7 +58,7 @@ export default function AboutScreen() {
             <View key={block.title} className="p-5 mb-3 bg-white border border-slate-100 shadow-sm rounded-2xl">
               <View className="flex-row items-start">
                 <View className="p-3 rounded-xl bg-slate-100">
-                  <Ionicons name={block.icon} size={20} color="#2563eb" />
+                  <Ionicons name={block.icon} size={20} color={DS.colors.primary} />
                 </View>
                 <View className="flex-1 ml-3">
                   <Text className="text-base font-bold text-slate-800">{block.title}</Text>

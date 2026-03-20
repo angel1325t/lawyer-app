@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, TextInputProps } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, TextInputProps, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { DS } from '../constants/designSystem';
 
 interface InputProps extends TextInputProps  {
   label?: string;
@@ -22,32 +23,28 @@ export const Input = ({
   const [secure, setSecure] = useState(isPassword);
 
   return (
-    <View className="mb-4">
+    <View style={styles.container}>
       {label && (
-        <Text className="mb-1 text-sm font-semibold text-gray-800">
+        <Text style={styles.label}>
           {label}
         </Text>
       )}
 
-      <View
-        className={`flex-row items-center px-4 py-3 border rounded-lg ${
-          error ? 'border-red-600' : 'border-gray-400'
-        }`}
-      >
+      <View style={[styles.inputWrap, error && styles.inputWrapError]}>
         {icon && (
           <Ionicons
             name={icon}
             size={18}
-            color="#374151"
-            style={{ marginRight: 8 }}
+            color={DS.colors.textMuted}
+            style={styles.icon}
           />
         )}
 
         <TextInput
-          className="flex-1 text-gray-900"
-          placeholderTextColor="#6B7280"
+          style={styles.input}
+          placeholderTextColor="#8b95ac"
           secureTextEntry={secure}
-          {...props}   // 👈 AQUÍ
+          {...props}
         />
 
         {isPassword && (
@@ -55,15 +52,54 @@ export const Input = ({
             <Ionicons
               name={secure ? 'eye-off' : 'eye'}
               size={18}
-              color="#374151"
+              color={DS.colors.textMuted}
             />
           </TouchableOpacity>
         )}
       </View>
 
       {error && (
-        <Text className="mt-1 text-xs text-red-600">{error}</Text>
+        <Text style={styles.error}>{error}</Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
+  label: {
+    marginBottom: 6,
+    fontSize: 13,
+    fontWeight: '600',
+    color: DS.colors.textStrong,
+  },
+  inputWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: DS.colors.border,
+    borderRadius: DS.radius.md,
+    backgroundColor: DS.colors.surface,
+    paddingHorizontal: 14,
+  },
+  inputWrapError: {
+    borderColor: DS.colors.danger,
+  },
+  icon: {
+    marginRight: 8,
+  },
+  input: {
+    flex: 1,
+    color: DS.colors.textStrong,
+    fontSize: 15,
+    paddingVertical: 12,
+  },
+  error: {
+    marginTop: 4,
+    fontSize: 12,
+    color: DS.colors.danger,
+  },
+});

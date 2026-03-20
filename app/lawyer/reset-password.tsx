@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 import { profileService } from '../../services/profileService';
+import { DS } from '../../constants/designSystem';
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: DS.colors.background }}>
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 24 }}
